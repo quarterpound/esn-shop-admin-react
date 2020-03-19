@@ -1,0 +1,28 @@
+.navBarOuter {
+    background-color: var(--color-1);
+}
+
+.navBarInner {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr 1fr;
+    padding: 12px 20px;
+    color: white;
+    align-items: center;
+}
+
+.navList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navList > li {
+    display: inline;
+    margin: 0 10px
+}
+
+.navList a {
+    padding: 5px 8px;
+    color: white;
+    text-decoration: none;
+}

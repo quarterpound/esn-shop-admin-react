@@ -1,0 +1,26 @@
+.generalInfo {
+    display: grid;
+    padding-bottom: 20px;
+    grid-gap: 50px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  
+  .infoTabInner {
+    padding: 10px 20px;
+    border: 1px solid gray;
+    border-radius: var(--border-radius); 
+  }
+  
+  .infoTabInner > h2 {
+    padding: 2px;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .infoTabInner > p {
+    padding: 2px;
+    margin: 0;
+    text-align: center;
+  }
+  
+  

@@ -1,0 +1,41 @@
+.searchBarHolder {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-bottom: 10px; 
+}
+.tableDiv {
+    padding: 15px 0;
+}
+
+.searchField {
+    height: 25px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: transparent;
+    padding: 4px 8px;
+}
+
+
+.tableDivInner {
+    display: grid;
+}
+
+.rowHeader {
+    border-top: 1px solid var(--border-color);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    font-weight: bold;
+}
+
+.tableRow {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    height: 40px;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tableRow:last-of-type {
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}

@@ -1,26 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Tabs from './componenets/Tabs';
+import NavBar from './componenets/NavBar';
+import Purchases from './pages/Purchases';
+import Inventory from './pages/Items';
+import AddItem from './pages/AddItem';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+    render() {
+		return (
+			<div className="App">
+				<Router>
+					<NavBar />
+					<div className="pageContainer">
+						<Switch>
+							<Route path="/purchases">
+								<h2>Purchases</h2>
+								<Tabs />
+								<Purchases />
+							</Route>
+							<Route exact path="/inventory/add">
+								<div style={{width: "50%", margin: "auto"}}>
+									<h2>Add Item</h2>
+									<AddItem />
+								</div>
+							</Route>
+							<Route path="/inventory">
+								<h2>Inventory</h2>
+								<Tabs />
+								<Inventory />
+							</Route>
+							<Route path="/users/add">
+								{"Users adding page"}
+							</Route>
+							<Route path="/users">
+								{"Users"}
+							</Route>
+						</Switch>
+					</div>
+				</Router>
+			</div>
+		);
+    }
 }
 
 export default App;

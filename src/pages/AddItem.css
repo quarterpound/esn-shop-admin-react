@@ -1,0 +1,36 @@
+.itemForm {
+    display: grid;
+    width: 100%;
+    grid-gap: 10px;
+}
+
+.formRow {
+    display: grid;
+    grid-gap: 30px;
+}
+
+.formInput {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 5px 8px;
+}
+
+.fileExplorer {
+    display: grid;
+    grid-gap: 20px;
+}
+
+.fileExplorerRow {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.fileExplorerImage {
+    display: block;
+    width: 100px;
+    justify-self: start;
+}
