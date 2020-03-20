@@ -3,46 +3,23 @@ import Table from '../componenets/Table';
 import './Purchases.css';
 
 class Purchases extends React.Component {
-    purchases = [
-        {
-            id: {
-                txt: 'fgrfekjf',
-                link: 'purchases/fgrfekjf'
-            },
-            productId: 'asaefas',
-            productOwner: 'Full Name',
-            productName: 'Some Name',
-            productQty: 24,
-            productDate: '13 March, 2018'
-        },
-        {
-            id: {
-                txt: 'fgrfekjf',
-                link: 'purchases/fgrfekjf'
-            },
-            productId: 'asaefas',
-            productOwner: 'Full Name',
-            productName: 'Some Name',
-            productQty: 24,
-            productDate: '13 March, 2018'
-        },
-        {
-            id: {
-                txt: 'fgrfekjf',
-                link: 'purchases/fgrfekjf'
-            },
-            productId: 'asaefas',
-            productOwner: 'Full Name',
-            productName: 'Some Name',
-            productQty: 24,
-            productDate: '13 March, 2018'
-        }
-    ]
+
+    state = {
+        log: "Loading data...",
+    }
 
     render = () => {
         return (
             <div>
-                <Table searchBy={['id', 'productId', 'productOwner', 'productName']}  data={this.purchases} ths={['ID', 'Product ID', 'Ordered By', 'Product Name', 'Qty', 'Date']} lengths="1fr 1fr 2fr 2fr 1fr 2fr"/>
+                {               
+                (() => {
+                    if(this.props.data) {
+                        return (<Table searchBy={['id', 'productId', 'productOwner', 'productName']}  data={this.props.data} ths={['ID', 'Product ID', 'Ordered By', 'Product Name', 'Qty', 'Date']} lengths="1fr 1fr 2fr 2fr 1fr 2fr"/>)
+                    }
+
+                    return (<><br /><br /> {this.state.log}</>)
+                })()
+                }
             </div>
         )
     }

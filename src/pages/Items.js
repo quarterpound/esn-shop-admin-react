@@ -4,45 +4,22 @@ import Table from '../componenets/Table';
 import './Items.css';
 
 class Inventory extends React.Component {
-    inventory = [
-        {
-            id: {
-                txt: 'dsafasf',
-                link: 'inventory/dsafasf'
-            },
-            productName: 'Some Product Title',
-            category: 'sweats',
-            quantity: 12,
-            price: 20.00,
-        },
-        {
-            id: {
-                txt: 'dsafasf',
-                link: 'inventory/dsafasf'
-            },
-            productName: 'Some Product Title',
-            category: 'sweats',
-            quantity: 12,
-            price: 20.00,
-        },
-        {
-            id: {
-                txt: 'dsafasf',
-                link: 'inventory/dsafasf'
-            },
-            productName: 'Some Product Title',
-            category: 'sweats',
-            quantity: 12,
-            price: 20.00,
-        }
-    ]
-
+    state = {
+        log: "Loading data...",
+    }
 
     render = () => {
         return (
             <div>
                 <span className="add-button"><Link to="/inventory/add">Add Item</Link></span>
-                <Table  data={this.inventory} ths={['ID', 'Name', 'Category', 'Qty', 'Price']} lengths="1fr 2fr 1fr 1fr 1fr"/>
+                {
+                    (() => {
+                        if(this.props.data) {
+                            return <Table  data={this.props.data} ths={['ID', 'Name', 'Category', 'Qty', 'Price']} lengths="1fr 2fr 1fr 1fr 1fr"/>
+                        }
+                        return <><br/><br/>{this.state.log}</>;
+                    })()
+                }
             </div>
         )
     }

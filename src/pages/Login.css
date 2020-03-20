@@ -1,0 +1,13 @@
+.loginContainer {
+    width: 100%;
+    height: 100vh;
+}
+
+.logo {
+    text-align: center;
+}
+
+.loginInner {
+    width: 200px;
+    margin: auto;
+}

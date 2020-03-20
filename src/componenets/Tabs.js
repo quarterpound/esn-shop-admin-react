@@ -8,25 +8,25 @@ class Tabs extends React.Component {
                 <div className="generalInfo">
                     <div className="infoTab">
                         <div className="infoTabInner">
-                            <h2>123</h2>
+                            <h2>{`₼ ${this.props.data.revenue || `Loading`}`}</h2>
                             <p>Revenue</p>
                         </div>
                     </div>
                     <div className="infoTab">
                         <div className="infoTabInner">
-                            <h2>123</h2>
+                            <h2>{`${this.props.data.totalPurchases || `Loading`}`}</h2>
                             <p>Total Purchases</p>
                         </div>
                     </div>
                     <div className="infoTab">
                         <div className="infoTabInner">
-                            <h2>123</h2>
+                            <h2>{`${this.props.data.individuals || `Loading`}`}</h2>
                             <p>Individual Customers</p>
                         </div>
                     </div>
                     <div className="infoTab">
                         <div className="infoTabInner">
-                            <h2>123</h2>
+                            <h2>{`${this.props.data.open || `Loading`}`}</h2>
                             <p>Open Orders</p>
                         </div>
                     </div>

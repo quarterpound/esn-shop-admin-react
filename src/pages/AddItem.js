@@ -1,16 +1,21 @@
 import React from 'react';
 import validator from 'validate.js';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
+import {Redirect} from 'react-router-dom';
 import './AddItem.css'
 
 
 class AddItem extends React.Component {
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Imh2UEhIbVhjIiwiZmlyc3QiOiJhbGkiLCJsYXN0IjoiZ2FzaW16YWRlIiwiZW1haWwiOiJ0dEBlc24uYXoiLCJ0eXBlIjoid2VibWFzdGVyIiwiaWF0IjoxNTg0NTc1NjI1LCJleHAiOjE1ODUxODA0MjV9.HPbq9dIUFW4MxbMmK7K49dPp_8qaC6ncgMFuqD3ieg0"
+    
 
     constructor(props) {
         super(props);
+        const cookies = new Cookies();
+        this.token = cookies.get("authtoken");
         this.state = {
             images: [],
+            redirectAuth: cookies.get("authtoken") === undefined,
         }
     }
 
@@ -44,7 +49,7 @@ class AddItem extends React.Component {
     sendData = async (imageLinks) => {
         this.setState({log: "Submitting form"});
         try {
-            const f = await axios.post('http://localhost:3001/items', {
+            await axios.post('http://localhost:3001/items', {
                 title: this.state.title,
                 description: this.state.description,
                 images: imageLinks,
@@ -54,15 +59,17 @@ class AddItem extends React.Component {
                 quantity: this.state.quantity,
             }, {headers: {"Content-Type": "application/json", Authorization: `Bearer ${this.token}`}});
 
-            this.setState({log: "Item Submission Succeded"});
+            this.setState({log: "Item Submission Succeded. Resetting form..."});
+
+            setTimeout(() => {
+                console.log("t")
+                return (<Redirect to='/inventory/add' />)
+            }, 3000) 
 
         } catch (e) {
             switch(e.response.status) {
                 case 401:
                     this.setState({log: "Authentication failed. You are not supposed to be here"});
-                    break;
-                case 400:
-                    this.setState({log: "Wrong paramaters!"});
                     break;
                 case 500:
                     this.setState({log: "Server issue. Everything was okay but server failed!"});
@@ -164,6 +171,11 @@ class AddItem extends React.Component {
     }
 
     render = () => {
+
+        if(this.state.redirectAuth) {
+            return (<Redirect to="/login" />)
+        }
+
         return (
             <div className="itemForm">
                 <div className="formRow">
@@ -177,22 +189,20 @@ class AddItem extends React.Component {
                 </div>
                 <div className="formRow">
                     <div className="fileExplorer">
-
                         {
                             (() => {
-                                let i = 0;
                                 return this.state.images.map((image, key) => {
                                     if(image !== null) {
-                                        i++;
                                         return (
                                             <div key={key} className="fileExplorerRow">
-                                                <img className="fileExplorerImage" src={URL.createObjectURL(image)} />
+                                                <img className="fileExplorerImage" alt={image.name} src={URL.createObjectURL(image)} />
                                                 <span>{image.name}</span>
                                                 <label> <input type='radio' checked={this.state.thumbnail === key} onChange={() => {this.setState({thumbnail: key})}} /> Thumbnail </label>
                                                 <button index={key} onClick={this.removeImage}>Action</button>
                                             </div>
                                         )                   
-                                    }                
+                                    }
+                                    return <></>                
                                 })
                             })()
                         }
