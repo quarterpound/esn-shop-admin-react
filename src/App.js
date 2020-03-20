@@ -1,9 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import Cookies from 'universal-cookie';
 import Decoder from 'jwt-decode';
+import actions from './actions';
 import Tabs from './componenets/Tabs';
 import NavBar from './componenets/NavBar';
 import Purchases from './pages/Purchases';
@@ -72,7 +74,8 @@ class App extends React.Component {
                 }
             }
 
-            this.setState({purchases: t})
+			
+			this.props.initPurchases(t)
 
         } catch (e) {
             console.log(e)
@@ -117,6 +120,7 @@ class App extends React.Component {
 	
 
     render() {
+
 		const tabData = {
 			revenue: this.state.revenue,
 			totalPurchases: this.state.totalPurchases, 
@@ -161,7 +165,7 @@ class App extends React.Component {
 							<div className="pageContainer">
 								<h2>Inventory</h2>
 								<Tabs data={tabData} />
-								<Inventory data={this.state.inventory} />
+								<Inventory data={this.props.inventory} />
 							</div>
 						</Route>
 						<Route path="/users/add">
@@ -175,7 +179,7 @@ class App extends React.Component {
 							<div className="pageContainer" >
 								<h2>Purchases</h2>
 								<Tabs data={tabData} />
-								<Purchases data={this.state.purchases} />
+								<Purchases data={this.props.purchases} />
 							</div>
 						</Route>
 					</Switch>
@@ -185,4 +189,7 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default connect(
+	(state) => {return {inventory: state.inventory, purchases: state.purchases}},
+	actions,
+)(App);
