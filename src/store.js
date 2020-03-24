@@ -1,5 +1,7 @@
+import Cookies from "universal-cookie";
+
 const initalState = {
-    authtoken: null,
+    authtoken: new Cookies().get("authtoken") || null,
     purchases: [],
     inventory: [],
 }
@@ -7,8 +9,10 @@ const initalState = {
 const rootReducer = (state = initalState, action) => {
     switch(action.type) {
         case "LOG_IN":
+            new Cookies().set("authtoken", action.payload);
             return {...state, authtoken: action.payload};
         case "LOG_OUT":
+            new Cookies().remove("authtoken");
             return {...state, authtoken: null};
         case "INITILIZE_PURCHASES":
             return { ...state, purchases: [...action.payload] };

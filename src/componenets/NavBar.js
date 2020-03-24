@@ -1,22 +1,32 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import { connect } from 'react-redux';
+import I from './Icon';
+import logout from '../assets/logout.svg';
 import esnLogo from '../assets/esn.png';
-import Cookies from 'universal-cookie';
+import actions from '../actions';
 import './NavBar.css';
 
 class NavBar extends React.Component {
     state = {}
 
     logOut = () => {
-        new Cookies().remove("authtoken")
-        this.setState({redirect: true})
+        this.props.logOut();
+        window.location.href="/login"
     }
 
-    render = () => {
-        if(this.state.redirect) {
-            return (<Redirect to="/login" />)
-        }
+    capitalize = (s) => {
+		return s.charAt(0).toUpperCase() + s.slice(1, s.length);
+	}	
 
+    render = () => {
+        let decoded;
+        try {
+            decoded = jwt_decode(this.props.authtoken);
+        } catch(k) {
+
+        }
         return (
             <div className="navBarOuter">
                 <div className="navBarInner">
@@ -30,12 +40,18 @@ class NavBar extends React.Component {
                         <ul className="navList">
                             <li><Link to="/purchases">Purchases</Link></li>
                             <li><Link to="/inventory">Inventory</Link></li>
-                            {(() => {if(this.props.name === "Ali Gasimzade") return (<li><Link to="/users">Users</Link></li>)})()}
+                            {(() => {if(decoded.type === "webmaster") return (<li><Link to="/users">Users</Link></li>)})()}
                         </ul>
                     </div>
                     <div style={{justifySelf: 'end'}}>
-                        {`Logged in as ${this.props.name}`} 
-                        <button onClick={this.logOut} style={{marginLeft: "5px"}}>Log out</button>
+                        {
+                            (() => {
+                                if(decoded) {
+                                    return `Logged in as ${this.capitalize(decoded.first)} ${this.capitalize(decoded.last)}`
+                                }
+                            })()
+                        } 
+                        <button onClick={this.logOut} style={{marginLeft: "5px", background: 'white', border: 'none', borderRadius: '2px', padding: "5px"}}> <I width={"15px"} src={logout} /> </button>
                     </div>
                 </div>
             </div>
@@ -43,4 +59,4 @@ class NavBar extends React.Component {
     }
 }
 
-export default NavBar;
+export default connect((state) => {return {authtoken: state.authtoken}}, actions)(NavBar);

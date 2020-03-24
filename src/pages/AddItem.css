@@ -34,3 +34,14 @@
     width: 100px;
     justify-self: start;
 }
+
+.errorsUl {
+    padding: 0;
+    margin: 0;
+}
+
+.errorItem {
+    color: red;
+    font-size: 11pt;
+    list-style-type: none;
+}

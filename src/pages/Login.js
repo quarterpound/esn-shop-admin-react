@@ -1,12 +1,25 @@
 import React from 'react';
 import axios from 'axios';
 import validator from 'validate.js';
-import Cookies from 'universal-cookie';
+import jwt_decode from 'jwt-decode';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import actions from '../actions';
 import './Login.css';
 
 class Login extends React.Component {
     state = {}
+
+    componentDidMount() {
+        if(this.props.authtoken) {
+            try {
+                jwt_decode(this.props.authtoken);
+                this.setState({redirect: true})
+            } catch(e) {
+                
+            }
+        }
+    }
 
     submitForm = async (e) => {
         e.preventDefault();
@@ -16,10 +29,8 @@ class Login extends React.Component {
                     email: this.state.email,
                     pwd: this.state.pwd
                 })
-
-                const cookies = new Cookies();
-                cookies.set('authtoken', t.data);
                 this.setState({redirect: true})
+                this.props.logIn(t.data);
             } catch(e) {
                 this.setState({log: "Wrong username or password"})
             }
@@ -76,4 +87,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login
+export default connect((state) => {return {authtoken: state.authtoken}}, actions)(Login);

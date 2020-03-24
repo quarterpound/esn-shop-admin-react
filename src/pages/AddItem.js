@@ -3,6 +3,10 @@ import validator from 'validate.js';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
+import cls from '../assets/close.svg';
+import I from '../componenets/Icon';
+import actions from '../actions';
 import './AddItem.css'
 
 
@@ -38,18 +42,26 @@ class AddItem extends React.Component {
     submitForm = async () => {
         const errors = validator(this.state, this.constraints);
         if(!errors) {
+            this.setState({errors: null});
             const imageLinks = await this.uploadImages();
             if(imageLinks) {
                 this.sendData(imageLinks)
             }
+        } else {
+            this.placeErrors(errors);
         }
-        console.log(errors)
+    }
+
+    placeErrors = (errors) => {
+        const merged = [].concat.apply([], Object.values(errors));
+        this.setState({errors: merged})
     }
 
     sendData = async (imageLinks) => {
         this.setState({log: "Submitting form"});
         try {
-            await axios.post('http://localhost:3001/items', {
+            this.setState({isLoading: true});
+            const t = await axios.post('http://localhost:3001/items', {
                 title: this.state.title,
                 description: this.state.description,
                 images: imageLinks,
@@ -59,11 +71,19 @@ class AddItem extends React.Component {
                 quantity: this.state.quantity,
             }, {headers: {"Content-Type": "application/json", Authorization: `Bearer ${this.token}`}});
 
-            this.setState({log: "Item Submission Succeded. Resetting form..."});
-
+            this.setState({log: "Item Submission Succeded. Resetting form...", errors: [], isLoading: false});
+            this.props.addItem({
+                id: {
+                    txt: t.data.id,
+                    link: `/inventory/${t.data.id}`
+                },
+                name: t.data.title,
+                category: t.data.category,
+                quantity: t.data.quantity,
+                price: t.data.price
+            })
             setTimeout(() => {
-                console.log("t")
-                return (<Redirect to='/inventory/add' />)
+                window.location.href = "add"
             }, 3000) 
 
         } catch (e) {
@@ -179,13 +199,13 @@ class AddItem extends React.Component {
         return (
             <div className="itemForm">
                 <div className="formRow">
-                    <input type="text" onChange={(e) => {e.persist();this.setState({title: e.target.value})}} className="formInput" placeholder="Item Name"/>
+                    <input type="text" disabled={this.state.isLoading} onChange={(e) => {e.persist();this.setState({title: e.target.value})}} className="formInput" placeholder="Item Name"/>
                 </div>
                 <div className="formRow">
-                    <textarea rows="5" onChange={(e) => {e.persist();this.setState({description: e.target.value})}} className="formInput" placeholder="Item descriptionription"></textarea>
+                    <textarea rows="5" disabled={this.state.isLoading} onChange={(e) => {e.persist();this.setState({description: e.target.value})}} className="formInput" placeholder="Item descriptionription"></textarea>
                 </div>
                 <div className="formRow">
-                    <input type='file' multiple onChange={this.addImageHandler}/>
+                    <input type='file' disabled={this.state.isLoading} multiple onChange={this.addImageHandler}/>
                 </div>
                 <div className="formRow">
                     <div className="fileExplorer">
@@ -197,8 +217,8 @@ class AddItem extends React.Component {
                                             <div key={key} className="fileExplorerRow">
                                                 <img className="fileExplorerImage" alt={image.name} src={URL.createObjectURL(image)} />
                                                 <span>{image.name}</span>
-                                                <label> <input type='radio' checked={this.state.thumbnail === key} onChange={() => {this.setState({thumbnail: key})}} /> Thumbnail </label>
-                                                <button index={key} onClick={this.removeImage}>Action</button>
+                                                <label> <input type='radio' checked={this.state.thumbnail === key} onChange={() => {this.setState({thumbnail: key})}} /></label>
+                                                <button index={key} style={{background: 'none', border: 'none', cursor: 'pointer'}} onClick={this.removeImage}> <I width={"12px"} src={cls} /> </button>
                                             </div>
                                         )                   
                                     }
@@ -210,9 +230,9 @@ class AddItem extends React.Component {
                 </div>
                 <div className="formRow">
                     <div style={{display: 'grid', gridTemplateColumns: "1fr 1fr 1fr", gridGap: "30px"}}>
-                        <input type="number" onChange={(e) => {e.persist();this.setState({quantity: e.target.value})}} min="1" placeholder="Quantity" className="formInput" />
-                        <input type="text" onChange={(e) => {e.persist();this.setState({category: e.target.value})}} placeholder="Category" className="formInput" />
-                        <input type="number" onChange={(e) => {e.persist();this.setState({price: e.target.value})}} step="0.01" placeholder="Price" className="formInput" />
+                        <input type="number" disabled={this.state.isLoading} onChange={(e) => {e.persist();this.setState({quantity: e.target.value})}} min="1" placeholder="Quantity" className="formInput" />
+                        <input type="text" disabled={this.state.isLoading} onChange={(e) => {e.persist();this.setState({category: e.target.value})}} placeholder="Category" className="formInput" />
+                        <input type="number" disabled={this.state.isLoading} onChange={(e) => {e.persist();this.setState({price: e.target.value})}} step="0.01" placeholder="Price" className="formInput" />
                     </div>
                 </div>
                 <div className="formRow">
@@ -222,10 +242,25 @@ class AddItem extends React.Component {
                 </div>
                 <div className="logs">
                     {this.state.log}
+                    {
+                        (() => {
+                            if(this.state.errors && this.state.errors.length !== 0) {
+                                return <ul className="errorsUl">
+                                    {
+                                        (() => {
+                                            return this.state.errors.map(e => {
+                                                return <li className="errorItem">{e}</li>
+                                            })
+                                        })()
+                                    }
+                                </ul>
+                            }
+                        })()
+                    }
                 </div>
             </div>
         )
     }
 }
 
-export default AddItem;
+export default connect(null, actions)(AddItem);

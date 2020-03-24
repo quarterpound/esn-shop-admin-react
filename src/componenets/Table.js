@@ -30,16 +30,18 @@ class Table extends React.Component {
                                     <div key={key} style={{gridTemplateColumns: this.props.lengths}} className="tableRow">
                                         {
                                             (() => {
-                                                return Object.values(row).map((t, k) => {
-                                                    if(typeof t === 'object') {
+                                                return Object.entries(row).map(([a, b], k) => {
+                                                    if(typeof b === 'object') {
                                                         return (
-                                                            <div key={k}><Link to={t.link}>{t.txt}</Link></div>
+                                                            <div key={k}><Link to={b.link}>{b.txt}</Link></div>
                                                         )
                                                     }
 
-                                                    return (
-                                                        <div key={k}>{t}</div>
-                                                    )
+                                                    if(this.props.disallow && !this.props.disallow.includes(a)) {
+                                                        return (
+                                                            <div key={k}>{b}</div>
+                                                        )
+                                                    }
                                                 })
                                             })()
                                         }
