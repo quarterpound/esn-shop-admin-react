@@ -29,7 +29,7 @@ class Items extends React.Component {
                 name: t.title,
                 category: t.category,
                 quantity: t.quantity,
-                price: t.price
+                price: `₼ ${t.price.toFixed(2)}`
             }
         })
         this.props.initInventory(k)

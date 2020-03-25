@@ -1,0 +1,18 @@
+.detailRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.detailRow3 {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.detailRow1 {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.bordered > div {
+    border-bottom: 1px solid black
+}

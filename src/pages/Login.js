@@ -4,6 +4,7 @@ import validator from 'validate.js';
 import jwt_decode from 'jwt-decode';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { AUTH } from '../c';
 import actions from '../actions';
 import './Login.css';
 
@@ -25,7 +26,7 @@ class Login extends React.Component {
         e.preventDefault();
         if(!validator(this.state, this.constraits)) {
             try {
-                const t = await axios.post("http://localhost:3001/auth", {
+                const t = await axios.post(AUTH, {
                     email: this.state.email,
                     pwd: this.state.pwd
                 })

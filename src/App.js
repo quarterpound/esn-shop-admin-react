@@ -6,6 +6,8 @@ import actions from './actions';
 import Tabs from './componenets/Tabs';
 import NavBar from './componenets/NavBar';
 import Purchases from './pages/Purchases';
+import Purchase from './pages/Purchase';
+import Item from './pages/Item';
 import Inventory from './pages/Items';
 import AddItem from './pages/AddItem';
 import Login from './pages/Login';
@@ -48,6 +50,12 @@ class App extends React.Component {
 								</div>
 							</div>
 						</Route>
+						<Route path="/inventory/:id">
+							<NavBar />
+							<div className="pageContainer">
+								<Item />
+							</div>
+						</Route>
 						<Route path="/inventory">
 							<NavBar />
 							<div className="pageContainer">
@@ -62,12 +70,26 @@ class App extends React.Component {
 						<Route path="/users">
 							{"Users"}
 						</Route>
-						<Route path="/">
+						<Route path="/purchases/:id">
 							<NavBar />
-							<div className="pageContainer" >
+							<div className="pageContainer" style={{width: "40%"}} >
+								<Purchase />
+							</div>
+						</Route>
+						<Route path="/purchases">
+							<NavBar />
+							<div className="pageContainer">
 								<h2>Purchases</h2>
 								<Tabs />
-								<Purchases data={this.props.purchases} />
+								<Purchases />
+							</div>
+						</Route>
+						<Route path="/">
+							<NavBar />
+							<div className="pageContainer">
+								<h2>Purchases</h2>
+								<Tabs />
+								<Purchases />
 							</div>
 						</Route>
 					</Switch>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { ITEMS, PURCHASES } from '../c';
 import actions from '../actions';
 import axios from 'axios';
 import moment from 'moment';
@@ -23,11 +24,11 @@ class Purchases extends React.Component {
 
     getPurchases = async () => {
 		try {
-            const f = await axios.get("http://localhost:3001/purchases", {headers: {Authorization: `Bearer ${this.props.authtoken}`}});
+            const f = await axios.get(PURCHASES, {headers: {Authorization: `Bearer ${this.props.authtoken}`}});
             let t = [];
             for (const a of f.data) {
                 for (const b of a.items) {
-                    const k = await axios.get(`http://localhost:3001/items/${b.id}`, {headers: {Authorization: `Bearer ${this.props.authtoken}`}})
+                    const k = await axios.get(`${ITEMS}/${b.id}`, {headers: {Authorization: `Bearer ${this.props.authtoken}`}})
                     t.push({
                         id : {
                             txt: `${a.id}`,

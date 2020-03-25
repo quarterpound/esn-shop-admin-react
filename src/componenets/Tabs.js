@@ -29,7 +29,7 @@ class Tabs extends React.Component {
                 <div className="generalInfo">
                     <div className="infoTab">
                         <div className="infoTabInner">
-                            <h2>{`₼ ${this.calcRevenue()}`}</h2>
+                            <h2>{`₼ ${this.calcRevenue().toFixed(2)}`}</h2>
                             <p>Revenue</p>
                         </div>
                     </div>
