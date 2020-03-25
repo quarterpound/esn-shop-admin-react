@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { ITEMS } from '../c';
 import actions from '../actions';
 import Table from '../componenets/Table';
 import './Items.css';
@@ -18,7 +19,7 @@ class Items extends React.Component {
     }
 
 	getItems = async () => {		
-		const f = await axios.get("http://localhost:3001/items", {headers: {Authorization: `Bearer ${this.props.authtoken}`}});
+		const f = await axios.get(ITEMS, {headers: {Authorization: `Bearer ${this.props.authtoken}`}});
         const k = f.data.map(t => {
             return {
                 id: {
