@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
+import { IMAGES, ITEMS } from '../c';
 import cls from '../assets/close.svg';
 import I from '../componenets/Icon';
 import actions from '../actions';
@@ -61,7 +62,7 @@ class AddItem extends React.Component {
         this.setState({log: "Submitting form"});
         try {
             this.setState({isLoading: true});
-            const t = await axios.post('http://localhost:3001/items', {
+            const t = await axios.post(ITEMS, {
                 title: this.state.title,
                 description: this.state.description,
                 images: imageLinks,
@@ -109,7 +110,7 @@ class AddItem extends React.Component {
 
         try {
             this.setState({log: "Image upload started"});
-            const f = await axios.post('http://localhost:3001/images', formData, {
+            const f = await axios.post(IMAGES, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${this.token}`,
