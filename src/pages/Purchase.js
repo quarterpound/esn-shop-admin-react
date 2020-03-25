@@ -15,10 +15,9 @@ class Purchase extends React.Component {
             let k = [];
             for(const l of f.data.items) {
                 let dr = await axios.get(`${ITEMS}/${l.id}`);
-                k.push({id: l.id, title: dr.data.title, qty: l.quantity});
+                k.push({id: l.id, title: dr.data.title, qty: l.quantity, price: dr.data.price * l.quantity});
             }
             f.data.items = k; 
-            console.log(f.data);
             this.setState({purchase: f.data});
         } catch(e) {
             console.log(e);
@@ -26,11 +25,11 @@ class Purchase extends React.Component {
     }
 
     closeOrder = async () => {
-        console.log(this.props.authtoken);
+        console.log(`${PURCHASES}/${this.props.id}/close`);
         try {
-            const f = await axios.put(`${PURCHASES}/${this.props.id}`,{headers: {"Content-Type": "application/json", Authorization: `Bearer ${this.props.token}`}});
-            console.log(f.data)
-            // window.location.href = `${this.props.id}`;
+            let k = await axios.put(`${PURCHASES}/${this.props.id}/close`, {}, {headers: {"Content-Type": "application/json", Authorization: `Bearer ${this.props.authtoken}`}, timeout: 10000});
+            console.log(k)
+            window.location.href = `${this.props.id}`;
         } catch(e) {
             console.log(e);
             this.setState({errors: `An error occured: ${e.response.status}`})
@@ -124,10 +123,21 @@ class Purchase extends React.Component {
                                             })
                                         })()
                                     }
+                                    <div className="detailRow3">
+                                        <div style={{fontWeight: 'bold', textAlign: 'center'}}>
+                                            
+                                        </div>
+                                        <div style={{borderRight: '1px solid black', fontWeight: 'bold', textAlign: 'center'}}>
+                                            
+                                        </div>
+                                        <div style={{fontWeight: 'bold', textAlign: 'center'}}>
+                                            Total: <span style={{fontWeight: 400}}>₼ {this.state.purchase.items.reduce((a, c) => a + c.price, 0)}</span>
+                                        </div>
+                                    </div>
                                     <div className="detailRow1" style={{textAlign: 'center', fontWeight: 'bold'}}>
                                         Details
                                     </div>
-                                    <div className="detailRow">
+                                    <div className="detailRow" style={{borderBottom: 'none'}}>
                                         <div style={{textAlign: 'center', fontWeight: 'bold', borderRight: '1px solid black'}}>
                                             Status:
                                         </div>

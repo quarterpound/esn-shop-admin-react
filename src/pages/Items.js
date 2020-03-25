@@ -13,7 +13,6 @@ class Items extends React.Component {
 
     componentDidMount() {
         if(this.props.inventory.length === 0) {
-            console.log(this.props.authtoken)
             this.getItems();
         }
     }

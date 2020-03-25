@@ -27,34 +27,39 @@ class NavBar extends React.Component {
         } catch(k) {
 
         }
-        return (
-            <div className="navBarOuter">
-                <div className="navBarInner">
-                    <div>
-                        <img style={{width: "30px"}} alt="ESN Logo" src={esnLogo}/>
-                    </div>
-                    <div>
-                        Webshop Admin
-                    </div>
-                    <div>
-                        <ul className="navList">
-                            <li><Link to="/purchases">Purchases</Link></li>
-                            <li><Link to="/inventory">Inventory</Link></li>
-                            {(() => {if(decoded.type === "webmaster") return (<li><Link to="/users">Users</Link></li>)})()}
-                        </ul>
-                    </div>
-                    <div style={{justifySelf: 'end'}}>
-                        {
-                            (() => {
-                                if(decoded) {
-                                    return `Logged in as ${this.capitalize(decoded.first)} ${this.capitalize(decoded.last)}`
-                                }
-                            })()
-                        } 
-                        <button onClick={this.logOut} style={{marginLeft: "5px", background: 'white', border: 'none', borderRadius: '2px', padding: "5px"}}> <I width={"15px"} src={logout} /> </button>
+
+        if(decoded) {
+            return (
+                <div className="navBarOuter">
+                    <div className="navBarInner">
+                        <div>
+                            <img style={{width: "30px"}} alt="ESN Logo" src={esnLogo}/>
+                        </div>
+                        <div>
+                            Webshop Admin
+                        </div>
+                        <div>
+                            <ul className="navList">
+                                <li><Link to="/purchases">Purchases</Link></li>
+                                <li><Link to="/inventory">Inventory</Link></li>
+                                {(() => {if(decoded.type === "webmaster") return (<li><Link to="/users">Users</Link></li>)})()}
+                            </ul>
+                        </div>
+                        <div style={{justifySelf: 'end'}}>
+                            {
+                                (() => {
+                                    if(decoded) {
+                                        return `Logged in as ${this.capitalize(decoded.first)} ${this.capitalize(decoded.last)}`
+                                    }
+                                })()
+                            } 
+                            <button onClick={this.logOut} style={{marginLeft: "5px", background: 'white', border: 'none', borderRadius: '2px', padding: "5px"}}> <I width={"15px"} src={logout} /> </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )
+        } return (
+            <>Logged out</>
         )
     }
 }

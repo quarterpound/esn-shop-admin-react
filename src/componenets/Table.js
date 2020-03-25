@@ -42,6 +42,8 @@ class Table extends React.Component {
                                                             <div key={k}>{b}</div>
                                                         )
                                                     }
+
+                                                    return null;
                                                 })
                                             })()
                                         }
