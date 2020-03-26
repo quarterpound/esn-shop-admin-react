@@ -9,7 +9,7 @@ class Tabs extends React.Component {
     }
 
     onlyOpen = () => {
-        return this.props.purchases.map(i => i.isOpen).length;
+        return this.props.purchases.map(i => {if(i.isOpen) return i}).length;
     }
 
     totalPurchases = () => {
