@@ -38,7 +38,7 @@ class Purchases extends React.Component {
                             txt: `${b.id}`,
                             link: `/inventory/${b.id}`
                         },
-                        productOwner: `${this.capitalize(a.first)} ${this.capitalize(a.first)}`,
+                        productOwner: `${this.capitalize(a.first)} ${this.capitalize(a.last)}`,
                         productName: k.data.title,
                         productQty: b.quantity,
                         productPrice: k.data.price,
