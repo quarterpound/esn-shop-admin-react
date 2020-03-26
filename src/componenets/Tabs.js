@@ -8,8 +8,8 @@ class Tabs extends React.Component {
         return [...new Set(this.props.purchases.map(pur => pur.phoneNumber))].length;
     }
 
-    onlyOpen = (value) => {
-        return value.isOpen
+    onlyOpen = () => {
+        return this.props.purchases.map(i => i.isOpen).length;
     }
 
     totalPurchases = () => {
@@ -47,7 +47,7 @@ class Tabs extends React.Component {
                     </div>
                     <div className="infoTab">
                         <div className="infoTabInner">
-                            <h2>{`${this.props.purchases.filter(this.onlyOpen).length | `Loading`}`}</h2>
+                            <h2>{this.onlyOpen()}</h2>
                             <p>Open Orders</p>
                         </div>
                     </div>
