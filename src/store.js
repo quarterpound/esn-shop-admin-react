@@ -4,6 +4,7 @@ const initalState = {
     authtoken: new Cookies().get("authtoken") || null,
     purchases: [],
     inventory: [],
+    users: [],
 }
 
 const rootReducer = (state = initalState, action) => {

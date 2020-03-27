@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import decoder from 'jwt-decode';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import actions from './actions';
+import Users from './pages/Users';
 import Tabs from './componenets/Tabs';
 import NavBar from './componenets/NavBar';
 import Purchases from './pages/Purchases';
@@ -64,11 +65,13 @@ class App extends React.Component {
 								<Inventory data={this.props.inventory} />
 							</div>
 						</Route>
-						<Route path="/users/add">
-							{"Users adding page"}
-						</Route>
 						<Route path="/users">
-							{"Users"}
+							<NavBar />
+							<div className="pageContainer">
+								<h2>Users</h2>
+								<Tabs />
+								<Users	 />
+							</div>
 						</Route>
 						<Route path="/purchases/:id">
 							<NavBar />

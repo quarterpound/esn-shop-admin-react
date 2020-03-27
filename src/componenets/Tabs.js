@@ -42,7 +42,7 @@ class Tabs extends React.Component {
                     <div className="infoTab">
                         <div className="infoTabInner">
                             <h2>{`${this.onlyUnique() | `Loading`}`}</h2>
-                            <p>Individual Customers</p>
+                            <p>Idv. Customers</p>
                         </div>
                     </div>
                     <div className="infoTab">

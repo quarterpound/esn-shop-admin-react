@@ -3,13 +3,17 @@ import axios from 'axios';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux'
-import { ITEMS } from '../c';
+import { ITEMS, IMAGES } from '../c';
 import './Item.css';
 
 class Item extends React.Component {
     state = {}
 
-    componentDidMount = async () => {
+    componentDidMount = () => {
+        this.getItem();
+    }
+
+    getItem = async () => {
         try {
             const f = await axios.get(`${ITEMS}/${this.props.id}`, {headers: {Authorization: `Bearer ${this.props.authtoken}`}})
             this.setState({item: f.data});
@@ -26,20 +30,91 @@ class Item extends React.Component {
                         if(this.state.item) {
                             return (
                                 <>
-                                    <h3>Product ID: {this.props.id}</h3>
-                                    <p className="itemCAT">{moment(this.state.item.createdAt).format('MMMM Do YYYY, h:mm a')}</p>
-                                    <h2>{this.state.item.title}</h2>
-                                    {
-                                      (() => {
-                                        return this.state.item.description.split('\n').map((pt, k) => {
-                                            return <p key={k}>{pt}</p>
-                                        })
-                                      })()
-                                    }
-                                    <ul>
-                                        <li>PRICE: ₼ {this.state.item.price.toFixed(2)} </li>
-                                        <li>QUANTITY: {this.state.item.quantity} </li>
-                                    </ul>
+                                    <div style={{border: "1px solid black"}} className="bordered">
+                                        <div className="detailRow">
+                                            <div style={{borderRight: '1px solid black', fontWeight: 'bold', textAlign: 'center'}}>
+                                                Item ID:
+                                           </div>
+                                            <div style={{textAlign: 'center'}} >
+                                                {this.props.id}
+                                            </div>
+                                        </div>
+                                        <div className="detailRow">
+                                            <div style={{borderRight: '1px solid black', fontWeight: 'bold', textAlign: 'center'}}>
+                                                Item Name:
+                                           </div>
+                                            <div style={{textAlign: 'center'}} >
+                                                {this.state.item.title}
+                                            </div>
+                                        </div>
+                                        <div className="detailRow">
+                                            <div style={{borderRight: '1px solid black', fontWeight: 'bold', textAlign: 'center'}}>
+                                                Quantity:
+                                           </div>
+                                            <div style={{textAlign: 'center'}} >
+                                                {this.state.item.quantity}
+                                            </div>
+                                        </div>
+                                        <div className="detailRow">
+                                            <div style={{borderRight: '1px solid black', fontWeight: 'bold', textAlign: 'center'}}>
+                                                Category:
+                                           </div>
+                                            <div style={{textAlign: 'center'}} >
+                                                {this.state.item.category}
+                                            </div>
+                                        </div>
+                                        <div className="detailRow">
+                                            <div style={{borderRight: '1px solid black', fontWeight: 'bold', textAlign: 'center'}}>
+                                                Price:
+                                           </div>
+                                            <div style={{textAlign: 'center'}} >
+                                                {`₼ ${this.state.item.price}`}
+                                            </div>
+                                        </div>
+                                        <div className="detailRow">
+                                            <div style={{borderRight: '1px solid black', fontWeight: 'bold', textAlign: 'center'}}>
+                                                Item Thumbnail:
+                                           </div>
+                                            <div style={{textAlign: 'center'}} >
+                                                <a target="_blank" href={`${IMAGES}/${this.state.item.thumb}`}>{this.state.item.thumb}</a>
+                                            </div>
+                                        </div>
+                                        <div className="detailRow" style={{gridTemplateColumns: "1fr"}}>
+                                            <div style={{fontWeight: 'bold', textAlign: 'center'}}>
+                                                Images
+                                           </div>
+                                        </div>
+                                        {
+                                            (() => {
+                                                return this.state.item.images.map((i, key) => {
+                                                    return (
+                                                        <div key={key} className="detailRow" style={{gridTemplateColumns: "2fr 1fr"}}>
+                                                            <div style={{borderRight: '1px solid black', textAlign: 'center'}}>
+                                                                <a target="_blank" href={`${IMAGES}/${i}`}>{i}</a>
+                                                            </div>
+                                                            <span style={{textAlign: 'center'}} >Size</span>
+                                                        </div>
+                                                    )
+                                                })
+                                            })()
+                                        }
+                                        <div className="detailRow" style={{gridTemplateColumns: "1fr"}}>
+                                            <div style={{fontWeight: 'bold', textAlign: 'center'}}>
+                                                Description
+                                            </div>
+                                        </div>
+                                        <div className="detailRow" style={{gridTemplateColumns: "1fr"}}>
+                                            <div>
+                                                {
+                                                    (() => {
+                                                        return this.state.item.description.split("\n").map((pk, k) => {
+                                                            return <p key={k} >{pk}</p>
+                                                        })
+                                                    })()
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
                                 </>
                             )
                         }
